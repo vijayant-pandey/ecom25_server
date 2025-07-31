@@ -22,16 +22,12 @@ const userImg =
 
   const {user} = useSelector((state:RootState) => state.userReducer)
   
-  const {isLoading, data, isError} = useStatsQuery(user?._id || "")
+  const {isLoading, data, isError} = useStatsQuery(user?._id!)
 
-  const stats = data?.stats
+  const stats = data?.stats!
 
-  const isStatsLoaded = stats && stats.count && stats.changePercent && stats.chart && stats.userRatio;
-
-  if (isError  || !isStatsLoaded) 
+  if (isError) 
     return <Navigate to={"/"} />
-
-
 
   return (
     <div className="admin-container">
