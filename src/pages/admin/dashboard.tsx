@@ -26,8 +26,9 @@ const userImg =
 
   const stats = data?.stats
 
+  const isStatsLoaded = stats && stats.count && stats.changePercent && stats.chart && stats.userRatio;
 
-  if (isError  || !stats) 
+  if (isError  || !isStatsLoaded) 
     return <Navigate to={"/"} />
 
 
