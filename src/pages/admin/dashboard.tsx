@@ -22,12 +22,12 @@ const userImg =
 
   const {user} = useSelector((state:RootState) => state.userReducer)
   
-  const {isLoading, data, isError} = useStatsQuery(user?._id!)
+  const {isLoading, data, isError} = useStatsQuery(user?._id || "")
 
-  const stats = data?.stats!
+  const stats = data?.stats
 
 
-  if (isError) 
+  if (isError  || !stats) 
     return <Navigate to={"/"} />
 
 
@@ -49,7 +49,7 @@ const userImg =
           <WidgetItem
             percent={stats.changePercent.revenue}
             amount={true}
-            value={stats.count.revenue}
+            value={stats?.count?.revenue || 0}
             heading="Revenue"
             color="rgb(0, 115, 255)"
           />
