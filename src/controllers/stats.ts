@@ -16,8 +16,12 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
 
     stats = await redis.get(key);
 
-    if (stats) 
+    if (stats)
+    {
         stats = JSON.parse(stats)
+        // Older cache entries were saved as { stats: {...} } - unwrap them
+        if (stats.stats) stats = stats.stats
+    }
     else{
         const today = new Date()
 
@@ -208,7 +212,7 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
             latestTransaction: modifiedLatestTransaction
         }
 
-        await redis.setex(key, redisTTL, JSON.stringify({stats}))
+        await redis.setex(key, redisTTL, JSON.stringify(stats))
     }
 
     return res.status(200).json({
