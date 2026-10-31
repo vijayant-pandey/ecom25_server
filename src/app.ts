@@ -83,3 +83,13 @@ app.use(errorMiddleware)
 app.listen(port, ()=>{
     console.log(`Express working on : ${port}`)
 })
+
+// Keep Render free tier awake - it sleeps after 15 min without traffic,
+// so ping our own public URL every 10 min. RENDER_EXTERNAL_URL is set by Render only.
+const selfUrl = process.env.RENDER_EXTERNAL_URL
+if (selfUrl)
+{
+    setInterval(() => {
+        fetch(selfUrl).catch((error) => console.log("Keep-alive ping failed", error))
+    }, 10 * 60 * 1000)
+}
